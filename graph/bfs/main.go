@@ -59,18 +59,16 @@ func main() {
 	isBipartite := true
 
 	for !q.empty() {
-		fmt.Println("test")
 		u := q.front()
 		fmt.Println(q.front())
 		q.pop()
 		if dist[u] != layer {
-			fmt.Printf("\nLayer %d", dist[u])
+			fmt.Printf("\nLayer %d\n", dist[u])
 		}
 		layer = dist[u]
-		fmt.Printf("visit %d", u)
+		fmt.Printf("visit %d\n", u)
 		for v := 1; v <= V; v++ {
 			if adjacencyMatrix[u][v] == 1 {
-				fmt.Println("test")
 				if dist[v] == INF {
 					dist[v] = dist[u] + 1
 					parent[v] = u
