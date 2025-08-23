@@ -1,16 +1,19 @@
+/*
+https://www.youtube.com/watch?v=IFNibRVgFBo - Tushar Roy
+
+Given n balloons, indexed from 0 to n-1. Each balloon is painted with a number on it represented by array nums. 
+You are asked to burst all the balloons. If the you burst balloon i you will get nums[left] * nums[i] * nums[right] coins.
+Here left and right are adjacent indices of i. After the burst, the left and right then becomes adjacent.
+
+Find the maximum coins you can collect by bursting the balloons wisely.
+Input: [3,1,5,8]
+Output: 167 
+*/
+
 #include <vector>
 
 using namespace std;
 
-// void showDp(vector<vector<int>> dp, int n) {
-    //     for (int i=0; i<=n; i++) {
-    //         for (int j=0; j<=n; j++) {
-    //             cout << dp[i][j] << " ";
-    //         }
-    //         cout << endl;
-    //     }
-    //     cout << endl;
-    // }
 int maxCoins(vector<int>& nums) {
     int n = nums.size();
     vector<int> a;
