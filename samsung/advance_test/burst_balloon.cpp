@@ -10,53 +10,49 @@ Input: [3,1,5,8]
 Output: 167 
 */
 
+#include <iostream>
 #include <vector>
 
 using namespace std;
 
-int maxCoins(vector<int>& nums) {
-    int n = nums.size();
-    vector<int> a;
-    a.push_back(1);
-    int i = 0;
-    while (i < n) {
-        a.push_back(nums[i]);
-        i++;
-    }
-    a.push_back(1);
-    vector<vector<int>> dp(n+1, vector<int>(n+1));
-
-    for (int i=1; i<=n; i++) {
-        dp[i][i] = a[i-1] * a[i] * a[i+1];
-    }
-
-    // showDp(dp, n);
-
-    for (int len=2; len <= n; len++) {
-        for (int i=1; i<=n-len+1; i++) {
-            int j = i + len - 1;
-
-            for (int k=i; k<=j; k++) {
-                int t = a[i-1] * a[k] * a[j+1];
-
-                if (i <= k-1) {
-                    t+=dp[i][k-1];
-                }
-
-                if (j>=k+1) {
-                    t+=dp[k+1][j];
-                }
-
-                dp[i][j] = max(dp[i][j], t);
-
-                // showDp(dp, n);
-            }
-        }
-    }
-
-    return dp[1][n];
+int countDp(vector<int>& ballons, vector<vector<int> >& dp, int left, int right) {
+  if (right - left == 0) return 0;
+  
+  if (dp[left][right] != -1) return dp[left][right];
+  
+  int ans = 0;
+  
+  for (int i=left+1; i<right; i++) {
+    int coins = ballons[left] * ballons[i] * ballons[right] + countDp(ballons, dp, left, i) + countDp(ballons, dp, i, right);
+    ans = max(ans, coins);
+  }
+  
+  dp[left][right] = ans;
+  
+  return ans;
 }
 
-int main() {
-    return 0;
+int main() 
+{
+  int t, n, temp;
+  cin >> t;
+  
+  while (t--) {
+    cin >> n;
+    vector<int> ballons;
+    for (int i=0; i<n; i++) {
+      cin >> temp;
+      ballons.push_back(temp);
+    }
+    
+    ballons.insert(ballons.begin(), 1);
+    
+    ballons.push_back(1);
+    
+    vector<vector<int> > dp(n+2, vector<int>(n+2, -1));
+    
+    cout << countDp(ballons, dp, 0, n+1) << endl;
+    
+  }
+  return 0;
 }
