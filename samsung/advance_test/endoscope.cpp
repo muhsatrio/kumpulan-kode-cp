@@ -21,6 +21,13 @@
 
 using namespace std;
 
+struct State {
+    int y;
+    int x;
+    int t;
+};
+
+
 void assignDirection(unordered_map<int, vector<pair<int, int> > >& directions) {
     vector<pair<int, int> > directionOne;
     directionOne.push_back(make_pair(0, 1));
@@ -71,38 +78,48 @@ bool isConnected(pair<int, int> currDir, int nextSubDir, unordered_map<int, vect
 }
 
 void bfs(vector<vector<int> > grids, vector<vector<bool> >& visited, unordered_map<int, vector<pair<int, int> > > directions, int n, int m, pair<int, int> start, int l, int& result) {
-    queue<pair<int, int> > q;
+    queue<State> q;
     int y, x;
+
+    State stateStart;
+
+    stateStart.y = start.first;
+    stateStart.x = start.second;
+    stateStart.t = 1;
     
-    q.push(start);
+    q.push(stateStart);
 
     result = 1;
     int time = 1;
 
     visited[start.first][start.second] = true;
 
-    while (!q.empty() && time < l) {
-        int sz = q.size();
-        while (sz--) {
-            auto [y, x] = q.front();
-            
-            q.pop();
+    while (!q.empty()) {
+        auto [y, x, t] = q.front();
+        
+        q.pop();
 
-            for (pair<int, int> eachCurrDirection : directions[grids[y][x]]) {
-                int ny = y + eachCurrDirection.first;
-                int nx = x + eachCurrDirection.second;
-    
-                if (ny >= 0 && ny < n && nx >= 0 && nx < m) {
-                    if (!visited[ny][nx] && grids[ny][nx] != 0) {
-                        if (isConnected(eachCurrDirection, grids[ny][nx], directions)) {
-                            visited[ny][nx] = true;
-                            q.push(make_pair(ny, nx));
-                            result++;
-                        }
+        if (t>=l) continue;
+
+        for (pair<int, int> eachCurrDirection : directions[grids[y][x]]) {
+            int ny = y + eachCurrDirection.first;
+            int nx = x + eachCurrDirection.second;
+
+            if (ny >= 0 && ny < n && nx >= 0 && nx < m) {
+                if (!visited[ny][nx] && grids[ny][nx] != 0) {
+                    if (isConnected(eachCurrDirection, grids[ny][nx], directions)) {
+                        visited[ny][nx] = true;
+                        State nextState;
+                        nextState.y = ny;
+                        nextState.x = nx;
+                        nextState.t = t+1;
+                        q.push(nextState);
+                        result++;
                     }
                 }
             }
         }
+        // }
         time++;
     }
 }
