@@ -51,11 +51,11 @@ Output (10 lines in total)
 
 #include <iostream>
 #include <vector>
-#include <cmath>
 #include <algorithm>
-#include <climits>
 
 using namespace std;
+
+const int INF = 1e9;
 
 struct Point {
   int x;
@@ -66,29 +66,22 @@ int countCost(Point a, Point b) {
   return abs(a.x - b.x) + abs(a.y - b.y);
 }
 
-int tsp(int mask, int curr, vector<vector<int>>& dp, vector<vector<int>>& cost, int n) {
-  int FULL = (1 << (n - 2 )) - 1;
-  
-  if (mask == FULL) {
-    return cost[curr][n-1];
+int countTSP(int n, int currPos, int mask, vector<vector<int> >& dp, vector<vector<int> >& cost) {
+  if (mask == ((1 << (n-2)) - 1)) {
+    return cost[currPos][n-1];
   }
   
-  int &res = dp[curr][mask];
+  if (dp[mask][currPos] != -1) return dp[mask][currPos];
   
-  if (res != -1) {
-    return res;
-  }
+  int ans = INF;
   
-  res = INT_MAX;
-  
-  for (int i=1; i<=n-2; i++) {
-    if (!(mask & (1 << (i - 1)))) {
-      int newMask = mask | (1 << (i - 1));
-      res = min(res, cost[curr][i] + tsp(newMask, i, dp, cost, n));
+  for (int i=1; i<n-1; i++) {
+    if (!(mask & (1 << (i-1))) && cost[currPos][i] > 0) {
+      ans = min(ans, cost[currPos][i] + countTSP(n, i, mask | (1 << (i-1)), dp, cost));
     }
   }
   
-  return res;
+  return dp[mask][currPos] = ans;
 }
 
 int main() 
@@ -98,28 +91,21 @@ int main()
   cin >> t;
   
   while (t--) {
-    cin >> n;
-    
-    Point start, finish, inputPoint;
-    
-    cin >> start.x >> start.y >> finish.x >> finish.y;
-    
+    Point start, finish, customer;
     vector<Point> nodes;
-    
+    cin >> n;
+    cin >> start.x >> start.y >> finish.x >> finish.y;
     nodes.push_back(start);
-    
     for (int i=0; i<n; i++) {
-      cin >> inputPoint.x >>inputPoint.y;
-      nodes.push_back(inputPoint);
+      cin >> customer.x >> customer.y;
+      nodes.push_back(customer);
     }
-    
     nodes.push_back(finish);
     
     int nSize = nodes.size();
     
-    vector<vector<int>> dp(nSize, vector<int>(1 << nSize, -1));
-    
-    vector<vector<int>> cost(nSize, vector<int>(nSize));
+    vector<vector<int> > cost(nSize, vector<int>(nSize));
+    vector<vector<int> > dp(1 << nSize, vector<int>(nSize, -1));
     
     for (int i=0; i<nSize; i++) {
       for (int j=0; j<nSize; j++) {
@@ -127,16 +113,7 @@ int main()
       }
     }
     
-    int ans = INT_MAX;
-    
-    for (int i=1; i<=n; i++) {
-      int mask = (1 << (i-1));
-      
-      ans = min(ans, cost[0][i] + tsp(mask, i, dp, cost, nSize));
-    }
-    
-    cout << ans << endl;
-    
+    cout << countTSP(nSize, 0, 0, dp, cost) << "\n";
   }
   return 0;
 }
