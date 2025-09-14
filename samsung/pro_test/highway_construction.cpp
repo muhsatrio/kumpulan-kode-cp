@@ -1,3 +1,47 @@
+// A government wants to build a highway connecting all cities.
+
+// However, due to the high cost, the government wants to ensure travel between all cities at the lowest possible cost.
+
+// There is also an additional constraint: to ensure eco-friendly construction without cutting down hills, some cities cannot be directly connected by roads.
+
+// Given a list of roads that can be connected for eco-friendly construction, help the government find the minimum cost to build a highway connecting all cities.
+
+
+// [Input]
+
+// The first line contains the number of test cases, T. (1 ≤ T ≤ 8).
+
+// The first line of each test case contains the number of cities, N. (2 ≤ N ≤ 50,000).
+
+// The second line of each test case contains the number of road candidates, M. (1 ≤ M ≤ 200,000)
+
+// . Starting from the third line of each test case, the M lines contain information about each road candidate, s, e, and c.
+
+// s and e are the numbers of each city that the road candidate connects, and c is the cost of building the road. (1 ≤ c ≤ 10,000)
+
+// Only inputs that can build a highway connecting all cities are given.
+
+// [Output]
+
+// For each test case, print the number of test cases “#(TC) “ on a single line, and print the minimum cost of building a highway connecting all cities.
+ 
+
+// input
+// 1
+// 5
+// 8
+// 1 2 4
+// 1 3 9
+// 1 4 21
+// 2 3 8 2 4
+// 17 3 4
+// 16 5
+// 2 20
+// 5 4 30	
+
+// output
+// #1 48
+
 #include <iostream>
 #include <vector>
 #include <queue>
