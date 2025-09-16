@@ -1,3 +1,28 @@
+// When there are two DNA sequences, we will measure how similar these two are.
+
+// A sequence of DNA is a string consisting of ‘A’, ‘C’, ‘G’, and ‘T’. A similar degree of two DNA sequences can be determined by LCS.
+
+// This is the longest common subsequence.
+
+// Given two DNA sequences, print out the length of the LCS of the two.
+
+// [Enter]
+
+// The number of test cases in the first line is given T. (1 ≤ T ≤ 10)
+
+// Each test case contains a sequence of DNA in the first and second lines. The length of the DNA sequence is less than 1,000.
+
+// [Output]
+
+// In each test case, print the test case number “#(TC)” and print the LCS length of the two DNA sequences.
+// Input
+// 1
+// ACGT
+// AGCT
+
+// Output
+// #1 3 	The answer to test case one
+
 #include <iostream>
 #include <vector>
 
